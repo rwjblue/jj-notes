@@ -9,6 +9,11 @@ version control workflows and commands for daily development tasks.
 - [Clone a Repository](#cloning-a-repository)
   - [Cloning with Jujutsu (Non-colocated)](#cloning-with-jujutsu-non-colocated)
   - [Setting up Colocated Repo](#setting-up-colocated-repo)
+- [Making changes](#making-changes)
+- [Pushing changes directly to a tracked branch](#pushing-changes-directly-to-a-tracked-branch)
+- [Pulling updates from the remote](#pulling-updates-from-the-remote)
+- [Updating local changes on top of a remote branch](#updating-local-changes-on-top-of-a-remote-branch)
+- [Start adding changes to a remote branch](#start-adding-changes-to-a-remote-branch)
 
 ## Guides
 
@@ -41,4 +46,94 @@ head" state is a bad thing (or otherwise makes it annoying).
 ```sh
 cd some-repo/
 jj git init --colocate
+```
+
+### Making changes
+
+In general, you want to end up with an empty commit at the end of your changes
+(also true after a fresh clone). So let's assume that is where you are starting
+from.
+
+This is one of the places where `jj` really shines. You basically just make the
+changes you want and the next time that `jj` runs (or automatically if you have
+the `watchman` integration enabled) it will automatically snapshot the changes
+into the current change.
+
+Then at any point, you can describe the set of changes you are doing:
+
+```sh
+jj describe
+```
+
+Then type up your commit message. I use the same basic format as I would in
+`git` (a shorter first line, then a longer description).
+
+When you are done with this change, you can use `jj new` to create a new empty
+commit and leave the working directory in a clean state.
+
+```sh
+jj new
+```
+
+### Pushing changes directly to a tracked branch
+
+I use this workflow a lot for things like
+[rwjblue/dotfiles](https://github.com/rwjblue/dotfiles) and
+[rwjblue/dotvim](https://github.com/rwjblue/dotvim) where I mostly just push
+directly to `master` | `main` branches. In this case, I'm not really worrying
+about collaborating with others (these are just personal repos after all), but
+the same workflow can be used for shared branches (and `jj` does a great job at
+helping you avoid mutating commits that have already been pushed).
+
+Let's assume you just finished [making a change](#making-changes) and you are
+ready to push them:
+
+```sh
+jj bookmark set main --revision @-
+```
+
+This updates the [bookmark](https://jj-vcs.github.io/jj/latest/bookmarks/)
+(which is basically Jujutsu's branch concept) to point to the change just
+before the current working commit (sorta akin to `HEAD^` in git, but in `jj`
+you always have a change for the working directory instead of the index).
+
+Now that the bookmark is updated, you can push the changes:
+
+```sh
+jj git push
+```
+
+### Pulling updates from the remote
+
+```sh
+jj git import
+```
+
+This does not update the local working copy (unlike something like `git pull`).
+
+### Updating local changes on top of a remote branch
+
+After [pulling updates from the remote](#pulling-updates-from-the-remote), you
+might want to update your working copy to the latest changes from `main` (or
+other tracked branch):
+
+```sh
+jj rebase --destination main
+```
+
+This will rebase the current revision (e.g. `@`) and any of it's ancestors that
+aren't already part of `main` on top of the latest `main` revision.
+
+### Start adding changes to a remote branch
+
+Make sure that you have the latest changes:
+
+```sh
+jj git import
+```
+
+Then you can start making changes:
+
+```sh
+jj new <branch-name>@<remote-name>
 ```
