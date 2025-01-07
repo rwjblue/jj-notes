@@ -10,7 +10,8 @@ version control workflows and commands for daily development tasks.
   - [Cloning with Jujutsu (Non-colocated)](#cloning-with-jujutsu-non-colocated)
   - [Setting up Colocated Repo](#setting-up-colocated-repo)
 - [Making changes](#making-changes)
-- [Pushing changes directly to a tracked branch](#pushing-changes-directly-to-a-tracked-branch)
+- [Pushing changes directly to trunk](#pushing-changes-directly-to-trunk)
+- [Pushing changes to a tracked branch](#pushing-changes-to-a-tracked-branch)
 - [Pulling updates from the remote](#pulling-updates-from-the-remote)
 - [Updating local changes on top of a remote branch](#updating-local-changes-on-top-of-a-remote-branch)
 - [Start adding changes to a remote branch](#start-adding-changes-to-a-remote-branch)
@@ -77,27 +78,59 @@ commit and leave the working directory in a clean state.
 jj new
 ```
 
-### Pushing changes directly to a tracked branch
+### Pushing changes directly to trunk
 
 I use this workflow a lot for things like
 [rwjblue/dotfiles](https://github.com/rwjblue/dotfiles) and
 [rwjblue/dotvim](https://github.com/rwjblue/dotvim) where I mostly just push
 directly to `master` | `main` branches. In this case, I'm not really worrying
-about collaborating with others (these are just personal repos after all), but
-the same workflow can be used for shared branches (and `jj` does a great job at
-helping you avoid mutating commits that have already been pushed).
+about collaborating with others (these are just personal repos after all).
 
 Let's assume you just finished [making a change](#making-changes) and you are
 ready to push them:
 
 ```sh
-jj bookmark move main --to @-
+jj bookmark move --from 'trunk()' --to @-
+```
+
+This updates any [bookmarks](https://jj-vcs.github.io/jj/latest/bookmarks/)
+(which is basically Jujutsu's branch concept) that point to the revision
+referenced by the [built-in
+alias](https://github.com/jj-vcs/jj/blob/v0.25.0/docs/revsets.md#built-in-aliases)
+`trunk()` (looks for `main`, `master`, and `trunk` bookmarks on `origin`)
+ to point to the change just before the current working commit (sorta akin to
+`HEAD` in git, but in `jj` you always have a change for the working directory
+instead of the index).
+
+Now that the bookmark is updated, you can push the changes:
+
+```sh
+jj git push
+```
+
+### Pushing changes to a tracked branch
+
+This is what you'd do in order to push to a remote branch that you've already
+tracked (e.g. updating a pull request -- or other shared branch).
+
+Let's assume you just finished [making a change](#making-changes) and you are
+ready to push them:
+
+```sh
+jj bookmark move <named-branch-name> --to @-
 ```
 
 This updates the [bookmark](https://jj-vcs.github.io/jj/latest/bookmarks/)
 (which is basically Jujutsu's branch concept) to point to the change just
-before the current working commit (sorta akin to `HEAD^` in git, but in `jj`
+before the current working commit (sorta akin to `HEAD` in git, but in `jj`
 you always have a change for the working directory instead of the index).
+
+Note: you can also use `jj bookmark set <named-branch-name> -r @-` (has the
+same effect as `bookmark move`), but `set` is a create or update style
+operation, while `move` is specifically for moving an existing bookmark. If you
+are pushing to a previously tracked branch, you definitely want to use `move`
+to make sure you don't accidentally typo the name (creating a new typoed
+bookmark name).
 
 Now that the bookmark is updated, you can push the changes:
 
