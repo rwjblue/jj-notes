@@ -91,7 +91,7 @@ Let's assume you just finished [making a change](#making-changes) and you are
 ready to push them:
 
 ```sh
-jj bookmark set main --revision @-
+jj bookmark move main --to @-
 ```
 
 This updates the [bookmark](https://jj-vcs.github.io/jj/latest/bookmarks/)
