@@ -14,6 +14,8 @@ version control workflows and commands for daily development tasks.
 - [Pulling updates from the remote](#pulling-updates-from-the-remote)
 - [Updating local changes on top of a remote branch](#updating-local-changes-on-top-of-a-remote-branch)
 - [Start adding changes to a remote branch](#start-adding-changes-to-a-remote-branch)
+- [See a complete diff between two branches](#see-a-complete-diff-between-two-branches)
+- [See a GitHub Pull Request style diff](#see-a-github-pull-request-style-diff)
 
 ## Guides
 
@@ -136,4 +138,26 @@ Then you can start making changes:
 
 ```sh
 jj new <branch-name>@<remote-name>
+```
+
+### See a complete diff between two branches
+
+If you want to see a literal diff of the changes between two branches (e.g.
+from your local branch and `main`), you would do this:
+
+```sh
+jj diff --from main
+```
+
+This will show additions in your branch, but also any changes added to `main`
+as deletions (because those changes are not in your branch).
+
+### See a GitHub Pull Request style diff
+
+More often, you want to see the changes that you've introduced in a branch
+since the branching point (e.g. ignore any new additions to `main`). This is
+effectively a GitHub Pull Request style diff.
+
+```sh
+jj diff --from 'fork_point(main|@)'
 ```
