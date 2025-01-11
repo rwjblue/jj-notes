@@ -141,7 +141,7 @@ jj git push
 ### Pulling updates from the remote
 
 ```sh
-jj git import
+jj git fetch
 ```
 
 This does not update the local working copy (unlike something like `git pull`).
@@ -149,15 +149,27 @@ This does not update the local working copy (unlike something like `git pull`).
 ### Updating local changes on top of a remote branch
 
 After [pulling updates from the remote](#pulling-updates-from-the-remote), you
-might want to update your working copy to the latest changes from `main` (or
-other tracked branch):
+might want to update your working copy to the latest changes from the primary
+upstream branch:
 
 ```sh
-jj rebase --destination main
+jj rebase --insert-after 'trunk()'
+
+# shorter equivalent commands:
+jj rebase --after 'trunk()'
+jj rebase -A 'trunk()'
 ```
 
-This will rebase the current revision (e.g. `@`) and any of it's ancestors that
-aren't already part of `main` on top of the latest `main` revision.
+If, instead of the upstream primary branch (aka `trunk()`) you want to rebase
+onto another bookmark (aka branch) you can:
+
+```sh
+jj rebase --insert-after <branch-name>
+```
+
+In either case (`trunk()` or specific tracked branch) this will rebase the
+current revision (e.g. `@`) and any of it's ancestors that aren't already part
+of the specified branch on top of the latest revision in the branch.
 
 ### Start adding changes to a remote branch
 
