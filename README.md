@@ -6,6 +6,7 @@ version control workflows and commands for daily development tasks.
 ## Table of Contents
 
 - [Configuration](./docs/config.md)
+- [GitHub Workflows](./docs/github_workflows.md)
 - [Clone a Repository](#cloning-a-repository)
   - [Cloning with Jujutsu (Non-colocated)](#cloning-with-jujutsu-non-colocated)
   - [Setting up Colocated Repo](#setting-up-colocated-repo)
