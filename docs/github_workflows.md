@@ -10,3 +10,28 @@ variable.
 ```sh
 export GIT_DIR="$PWD.jj/repo/store/git"
 ```
+
+## Setting up a remote for a forked repo
+
+Assuming you've configured `GIT_DIR`, you can use the `gh` CLI to create a fork:
+
+```sh
+gh repo fork
+```
+
+By default (without other args), this will change the original `origin` to be
+named `upstream` and create a new remote named `origin` that points to your
+fork. After this you have to fetch all remotes (or else you end up with an
+error RE: `trunk()` alias being missing -- at least right now 2025-01-11):
+
+```sh
+jj git fetch --all-remotes
+```
+
+`jj` is already tracking `main@origin` (from our original `jj git clone`), but
+that now points at our fork. We need instruct `jj` to track `main@upstream`
+also now:
+
+```sh
+jj bookmark track main@upstream
+```
