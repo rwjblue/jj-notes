@@ -27,11 +27,17 @@ gh repo fork
 
 By default (without other args), this will change the original `origin` to be
 named `upstream` and create a new remote named `origin` that points to your
-fork. After this you have to fetch all remotes (or else you end up with an
-error RE: `trunk()` alias being missing -- at least right now 2025-01-11):
+fork. Now we have two remotes (`origin` and `upstream`), and we need to ensure
+that both are fetched when we run future `jj git fetch` operations:
 
 ```sh
-jj git fetch --all-remotes
+jj config set --repo git.fetch '["origin", "upstream"]'
+```
+
+Now we need to fetch everything:
+
+```sh
+jj git fetch
 ```
 
 `jj` is already tracking `main@origin` (from our original `jj git clone`), but
@@ -40,4 +46,10 @@ also now:
 
 ```sh
 jj bookmark track main@upstream
+```
+
+I also like to update `trunk()` to point at the "real" trunk (aka on `upstream`):
+
+```sh
+jj config set --repo revset-aliases.'"trunk()"' 'main@upstream'
 ```
