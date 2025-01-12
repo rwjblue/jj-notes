@@ -1,5 +1,11 @@
 # GitHub Workflows
 
+[//]: # (Table of Contents)
+
+<!-- TOC -->
+
+<!-- /TOC -->
+
 ## Setting up GH in non-colocated repos
 
 If you are using "pure" `jj` (e.g. not using `jj git init --colocate` or `jj
