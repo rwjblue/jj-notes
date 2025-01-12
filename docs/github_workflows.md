@@ -1,10 +1,10 @@
 # GitHub Workflows
 
-[//]: # (Table of Contents)
-
-<!-- TOC -->
-
-<!-- /TOC -->
+<!--toc:start-->
+- [GitHub Workflows](#github-workflows)
+  - [Setting up GH in non-colocated repos](#setting-up-gh-in-non-colocated-repos)
+  - [Setting up a remote for a forked repo](#setting-up-a-remote-for-a-forked-repo)
+<!--toc:end-->
 
 ## Setting up GH in non-colocated repos
 

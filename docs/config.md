@@ -1,5 +1,13 @@
 # Basic Jujutsu configuration
 
+<!--toc:start-->
+- [Basic Jujutsu configuration](#basic-jujutsu-configuration)
+  - [Delta for pager](#delta-for-pager)
+  - [Private Commits](#private-commits)
+  - [Better Describe Template](#better-describe-template)
+  - [Starship Integration](#starship-integration)
+<!--toc:end-->
+
 Just like Git, Jujutsu has a configuration file that can be used to set up
 defaults and aliases. The configuration file is located at
 `~/.config/jj/config.toml`.

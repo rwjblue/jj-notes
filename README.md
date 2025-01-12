@@ -1,27 +1,30 @@
 # 🍐jj-notes
 
+<!--toc:start-->
+- [🍐jj-notes](#🍐jj-notes)
+  - [Guides](#guides)
+  - [Cloning a Repository](#cloning-a-repository)
+    - [Cloning with Jujutsu (Non-colocated)](#cloning-with-jujutsu-non-colocated)
+    - [Setting up Colocated Repo](#setting-up-colocated-repo)
+  - [Making changes](#making-changes)
+  - [Pushing changes directly to trunk](#pushing-changes-directly-to-trunk)
+  - [Pushing changes to a tracked branch](#pushing-changes-to-a-tracked-branch)
+  - [Pulling updates from the remote](#pulling-updates-from-the-remote)
+  - [Updating local changes on top of a remote branch](#updating-local-changes-on-top-of-a-remote-branch)
+  - [Start adding changes to a remote branch](#start-adding-changes-to-a-remote-branch)
+  - [See a complete diff between two branches](#see-a-complete-diff-between-two-branches)
+  - [See a GitHub Pull Request style diff](#see-a-github-pull-request-style-diff)
+<!--toc:end-->
+
 Personal documentation of common [Jujutsu (jj)](https://github.com/jj-vcs/jj)
 version control workflows and commands for daily development tasks.
 
-## Table of Contents
-
-- [Configuration](./docs/config.md)
-- [GitHub Workflows](./docs/github_workflows.md)
-- [Clone a Repository](#cloning-a-repository)
-  - [Cloning with Jujutsu (Non-colocated)](#cloning-with-jujutsu-non-colocated)
-  - [Setting up Colocated Repo](#setting-up-colocated-repo)
-- [Making changes](#making-changes)
-- [Pushing changes directly to trunk](#pushing-changes-directly-to-trunk)
-- [Pushing changes to a tracked branch](#pushing-changes-to-a-tracked-branch)
-- [Pulling updates from the remote](#pulling-updates-from-the-remote)
-- [Updating local changes on top of a remote branch](#updating-local-changes-on-top-of-a-remote-branch)
-- [Start adding changes to a remote branch](#start-adding-changes-to-a-remote-branch)
-- [See a complete diff between two branches](#see-a-complete-diff-between-two-branches)
-- [See a GitHub Pull Request style diff](#see-a-github-pull-request-style-diff)
-
 ## Guides
 
-### Cloning a Repository
+- [GitHub Workflows](./docs/github_workflows.md)
+- [Configuration](./docs/config.md)
+
+## Cloning a Repository
 
 There are two main ways to clone a repo:
 
@@ -29,7 +32,7 @@ There are two main ways to clone a repo:
 - Using git as a backing store, but not colocated (`.git` ends up in
   `.jj/repo/store/git`)
 
-#### Cloning with Jujutsu (Non-colocated)
+### Cloning with Jujutsu (Non-colocated)
 
 In this setup, there is still a backing `git` repo but it isn't top level. This
 means other tooling doesn't think it's in a `git` repo (e.g. `starship` prompt
@@ -40,7 +43,7 @@ jj git clone https://github.com/rwjblue/jj-notes.git
 cd jj-notes/
 ```
 
-#### Setting up Colocated Repo
+### Setting up Colocated Repo
 
 This keeps a top level `.git` folder, and allows you to always "drop back" to
 using `git` commands if you need to. This exposes the ultimate escape hatch,
@@ -52,7 +55,7 @@ cd some-repo/
 jj git init --colocate
 ```
 
-### Making changes
+## Making changes
 
 In general, you want to end up with an empty commit at the end of your changes
 (also true after a fresh clone). So let's assume that is where you are starting
@@ -79,7 +82,7 @@ commit and leave the working directory in a clean state.
 jj new
 ```
 
-### Pushing changes directly to trunk
+## Pushing changes directly to trunk
 
 I use this workflow a lot for things like
 [rwjblue/dotfiles](https://github.com/rwjblue/dotfiles) and
@@ -109,7 +112,7 @@ Now that the bookmark is updated, you can push the changes:
 jj git push
 ```
 
-### Pushing changes to a tracked branch
+## Pushing changes to a tracked branch
 
 This is what you'd do in order to push to a remote branch that you've already
 tracked (e.g. updating a pull request -- or other shared branch).
@@ -139,7 +142,7 @@ Now that the bookmark is updated, you can push the changes:
 jj git push
 ```
 
-### Pulling updates from the remote
+## Pulling updates from the remote
 
 ```sh
 jj git fetch
@@ -147,7 +150,7 @@ jj git fetch
 
 This does not update the local working copy (unlike something like `git pull`).
 
-### Updating local changes on top of a remote branch
+## Updating local changes on top of a remote branch
 
 After [pulling updates from the remote](#pulling-updates-from-the-remote), you
 might want to update your working copy to the latest changes from the primary
@@ -172,7 +175,7 @@ In either case (`trunk()` or specific tracked branch) this will rebase the
 current revision (e.g. `@`) and any of it's ancestors that aren't already part
 of the specified branch on top of the latest revision in the branch.
 
-### Start adding changes to a remote branch
+## Start adding changes to a remote branch
 
 Make sure that you have the latest changes:
 
@@ -186,7 +189,7 @@ Then you can start making changes:
 jj new <branch-name>@<remote-name>
 ```
 
-### See a complete diff between two branches
+## See a complete diff between two branches
 
 If you want to see a literal diff of the changes between two branches (e.g.
 from your local branch and `main`), you would do this:
@@ -198,7 +201,7 @@ jj diff --from main
 This will show additions in your branch, but also any changes added to `main`
 as deletions (because those changes are not in your branch).
 
-### See a GitHub Pull Request style diff
+## See a GitHub Pull Request style diff
 
 More often, you want to see the changes that you've introduced in a branch
 since the branching point (e.g. ignore any new additions to `main`). This is
