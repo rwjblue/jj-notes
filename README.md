@@ -157,18 +157,17 @@ might want to update your working copy to the latest changes from the primary
 upstream branch:
 
 ```sh
-jj rebase --insert-after 'trunk()'
+jj rebase --destination 'trunk()'
 
 # shorter equivalent commands:
-jj rebase --after 'trunk()'
-jj rebase -A 'trunk()'
+jj rebase -d 'trunk()'
 ```
 
 If, instead of the upstream primary branch (aka `trunk()`) you want to rebase
 onto another bookmark (aka branch) you can:
 
 ```sh
-jj rebase --insert-after <branch-name>
+jj rebase -d <branch-name>
 ```
 
 In either case (`trunk()` or specific tracked branch) this will rebase the
