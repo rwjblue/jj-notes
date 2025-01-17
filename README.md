@@ -209,3 +209,18 @@ effectively a GitHub Pull Request style diff.
 ```sh
 jj diff --from 'fork_point(main|@)'
 ```
+
+## TODO:
+
+Find all commits that are only reachable by a given revision (assuming XXXX):
+
+```sh
+jj log -r '(visible_heads() ~ XXXX)..'
+```
+
+This can be used anywhere a revset is asked for, for example to drop all
+commits that are only reachable by a specific revision (XXXX) you can:
+
+```sh
+jj abandon -r '(visible_heads() ~ XXXX)..'
+```
